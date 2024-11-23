@@ -1,0 +1,51 @@
+services:
+
+    ollama:
+        image: ollama/ollama:0.4.1
+        volumes:
+            - ./ollama/entrypoint.sh:/entrypoint.sh
+        entrypoint: ["/usr/bin/bash", "/entrypoint.sh"]
+
+    db:
+        image: mysql:9.1.0
+        environment:
+            MYSQL_ROOT_PASSWORD_FILE: /run/secrets/db_root_password
+            MYSQL_DATABASE: calendar
+            MYSQL_USER: api
+            MYSQL_PASSWORD_FILE: /run/secrets/db_password
+        secrets:
+            - db_root_password
+            - db_password
+        volumes:
+            - ./db/initialization.sql:/docker-entrypoint-initdb.d/initialization.sql
+            - ./db/healthcheck.sh:/healthcheck.sh
+        healthcheck:
+            test: ./healthcheck.sh
+            interval: 10s
+            timeout: 1s
+            retries: 15
+            start_period: 30s
+
+    api:
+        build:
+            context: ./api
+            dockerfile: ./api/Dockerfile
+        ports:
+            - 8080:8080
+        environment:
+            DB_PASSWORD_FILE: /run/secrets/db_password
+            DB_CONNECTION_STRING: Server=db;Port=3306;Database=calendar;User=api;Password={0}
+        secrets:
+            - db_password
+        links:
+            - ollama
+            - db
+        depends_on:
+            db:
+                condition: service_healthy
+
+secrets:
+    db_password:
+        file: ./db_password.txt
+    db_root_password:
+        file: ./db_root_password.txt
