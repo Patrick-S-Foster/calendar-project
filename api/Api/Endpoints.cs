@@ -50,11 +50,12 @@ public static class Endpoints
                     }
 
                     return Results.Json(db.Events.Where(e =>
-                        e.User == user &&
-                        e.Start.Year <= year &&
-                        e.Start.Month <= month &&
-                        e.End.Year >= year &&
-                        e.End.Month >= month));
+                            e.User == user &&
+                            e.Start.Year <= year &&
+                            e.Start.Month <= month &&
+                            e.End.Year >= year &&
+                            e.End.Month >= month)
+                        .Select(e => new ReturnEvent(e.Id, e.Title, e.Start, e.End)));
                 })
             .RequireAuthorization();
 
