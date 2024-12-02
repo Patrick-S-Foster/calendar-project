@@ -21,19 +21,22 @@ var fullConnectionString = string.Format(connectionString, dbPassword);
 
 builder.Services.AddDbContext<CalendarDbContext>(options => options.UseMySQL(fullConnectionString));
 
-builder.Services.AddCors();
 builder.Services.AddHttpClient("llm", client => client.BaseAddress = new Uri("http://ollama:11434/api/generate"));
+builder.Services.AddCors(options =>
+    options.AddPolicy("AllowAll", policyBuilder =>
+        policyBuilder.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod()));
 
 builder.Services.AddAuthorization();
 builder.Services.AddIdentityApiEndpoints<IdentityUser>().AddEntityFrameworkStores<CalendarDbContext>();
 
 var app = builder.Build();
 
-app.UseCors(corsPolicyBuilder => corsPolicyBuilder.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
-
 app.MapIdentityApi<IdentityUser>();
 app.MapOllamaEndpoints();
 app.MapLogoutEndpoint();
 app.MapCrudEndpoints();
+
+app.UseCors("AllowAll");
+app.UseAuthorization();
 
 app.Run();
