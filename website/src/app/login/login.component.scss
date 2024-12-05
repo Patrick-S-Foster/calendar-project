@@ -1,0 +1,6 @@
+app-credential-form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: calc(var(--mat-sys-corner-large) * 4) var(--mat-sys-corner-large);
+}
