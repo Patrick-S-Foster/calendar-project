@@ -1,12 +1,13 @@
 import {Component, ViewChild} from '@angular/core';
 import {CredentialFormComponent} from "../credential-form/credential-form.component";
-import {Router} from "@angular/router";
+import {Router, RouterLink} from "@angular/router";
 import {EventService} from "../event.service";
 
 @Component({
     selector: 'app-register',
     imports: [
-        CredentialFormComponent
+        CredentialFormComponent,
+        RouterLink
     ],
     templateUrl: './register.component.html',
     styleUrl: './register.component.scss'
