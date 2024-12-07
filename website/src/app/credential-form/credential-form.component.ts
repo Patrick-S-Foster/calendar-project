@@ -56,7 +56,7 @@ export class CredentialFormComponent {
     }
 
     protected togglePasswordVisibility($event: any) {
-        if ($event.pointerType === 'click') {
+        if ($event.pointerType === 'mouse') {
             this.hidePassword.set(!this.hidePassword());
         }
     }
