@@ -15,6 +15,7 @@ export class EventService {
     private lastRequestedMonth = new Date().getMonth() + 1;
     private lastRequestedYear = new Date().getFullYear();
 
+    loggedIn = false;
     events: CalendarEvent[] = [];
 
     private clearTokens() {
@@ -22,11 +23,13 @@ export class EventService {
         localStorage.removeItem(this.refreshTokenKey);
         this.refreshAt = 0;
         this.events = [];
+        this.loggedIn = false;
     }
 
     private async setTokens(response: Response) {
         if (!response.ok) {
-            return false;
+            this.loggedIn = false;
+            return;
         }
 
         const json = await response.json();
@@ -35,7 +38,7 @@ export class EventService {
         localStorage.setItem(this.refreshTokenKey, json.refreshToken);
         this.refreshAt = Date.now() + json.expiresIn * 1000 * this.refreshCachePercentage;
 
-        return true;
+        this.loggedIn = true;
     }
 
     private getHeaders(): { 'Content-Type': string, 'Authorization': string } | { 'Content-Type': string } {
@@ -51,9 +54,9 @@ export class EventService {
         return {'Content-Type': 'application/json'};
     }
 
-    private async refresh(): Promise<boolean> {
+    private async refresh() {
         if (Date.now() < this.refreshAt) {
-            return true;
+            return;
         }
 
         const response = await fetch(environment.refreshUrl, {
@@ -100,7 +103,8 @@ export class EventService {
             body: JSON.stringify({email, password})
         });
 
-        return this.setTokens(response);
+        await this.setTokens(response);
+        return this.loggedIn;
     }
 
     private dateToString(date: Date) {
@@ -118,7 +122,9 @@ export class EventService {
     }
 
     async create(title: string, start: Date, end: Date) {
-        if (!await this.refresh()) {
+        await this.refresh();
+
+        if (!this.loggedIn) {
             return false;
         }
 
@@ -159,16 +165,17 @@ export class EventService {
     }
 
     async setEventRange(month: number, year: number) {
-        if (!await this.refresh()) {
-            return false;
-        }
+        await this.refresh();
 
-        this.events = await this.getEvents(month, year);
-        return true;
+        if (this.loggedIn) {
+            this.events = await this.getEvents(month, year);
+        }
     }
 
     async update(id: number, title: string, start: Date, end: Date) {
-        if (!await this.refresh()) {
+        await this.refresh();
+
+        if (!this.loggedIn) {
             return false;
         }
 
@@ -185,7 +192,9 @@ export class EventService {
     }
 
     async delete(id: number) {
-        if (!await this.refresh()) {
+        await this.refresh();
+
+        if (!this.loggedIn) {
             return false;
         }
 
