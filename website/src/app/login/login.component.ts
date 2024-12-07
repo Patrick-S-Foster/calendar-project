@@ -21,7 +21,7 @@ export class LoginComponent {
 
     async login(data: { email: string; password: string }) {
         if (await this.eventService.login(data.email, data.password)) {
-            // TODO: navigate with the router to the calendar page.
+            await this.router.navigate(['calendar']);
             return;
         }
 
