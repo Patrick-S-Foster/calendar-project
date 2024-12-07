@@ -126,10 +126,6 @@ export class EventService {
         return this.loggedIn;
     }
 
-    private dateToString(date: Date) {
-        return `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()}T${date.getHours()}:${date.getMinutes()}:${date.getSeconds()}`;
-    }
-
     private stringToDate(dateString: string) {
         return new Date(
             Number(dateString.substring(0, 4)),
@@ -138,6 +134,17 @@ export class EventService {
             Number(dateString.substring(11, 13)),
             Number(dateString.substring(14, 16)),
             Number(dateString.substring(17, 19)))
+    }
+
+    private dateToString(date: Date) {
+        const year = date.getFullYear().toString().padStart(4, '0');
+        const month = (date.getMonth() + 1).toString().padStart(2, '0');
+        const day = date.getDate().toString().padStart(2, '0');
+        const hour = date.getHours().toString().padStart(2, '0');
+        const minute = date.getMinutes().toString().padStart(2, '0');
+        const second = date.getSeconds().toString().padStart(2, '0');
+
+        return `${year}-${month}-${day}T${hour}:${minute}:${second}`;
     }
 
     async create(title: string, start: Date, end: Date) {
