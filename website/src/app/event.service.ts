@@ -13,10 +13,10 @@ export class EventService {
     private readonly refreshCachePercentage = 0.5;
 
     private refreshAt = 0;
-    private lastRequestedMonth = new Date().getMonth() + 1;
-    private lastRequestedYear = new Date().getFullYear();
 
     loggedIn = false;
+    currentMonth = new Date().getMonth() + 1;
+    currentYear = new Date().getFullYear();
     events: CalendarEvent[] = [];
 
     constructor() {
@@ -37,6 +37,8 @@ export class EventService {
         localStorage.removeItem(this.refreshTokenKey);
         localStorage.removeItem(this.refreshAtKey);
         this.refreshAt = 0;
+        this.currentMonth = new Date().getMonth() + 1;
+        this.currentYear = new Date().getFullYear();
         this.events = [];
         this.loggedIn = false;
     }
@@ -155,7 +157,7 @@ export class EventService {
             })
         });
 
-        await this.setEventRange(this.lastRequestedMonth, this.lastRequestedYear);
+        await this.refreshEvents();
 
         return response.ok;
     }
@@ -179,6 +181,10 @@ export class EventService {
                 end: this.stringToDate(event.end)
             };
         });
+    }
+
+    refreshEvents() {
+        return this.setEventRange(this.currentMonth, this.currentYear);
     }
 
     async setEventRange(month: number, year: number) {
