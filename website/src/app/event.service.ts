@@ -9,6 +9,7 @@ export class EventService {
 
     private readonly accessTokenKey = 'AccessToken';
     private readonly refreshTokenKey = 'RefreshToken';
+    private readonly refreshAtKey = 'RefreshAt';
     private readonly refreshCachePercentage = 0.5;
 
     private refreshAt = 0;
@@ -18,9 +19,23 @@ export class EventService {
     loggedIn = false;
     events: CalendarEvent[] = [];
 
+    constructor() {
+        const accessToken = localStorage.getItem(this.accessTokenKey);
+        const refreshToken = localStorage.getItem(this.refreshTokenKey);
+        const refreshAt = parseInt(localStorage.getItem(this.refreshAtKey) ?? 'NaN');
+
+        if (accessToken === null || refreshToken === null || Number.isNaN(refreshAt)) {
+            return;
+        }
+
+        this.refreshAt = refreshAt;
+        this.loggedIn = true;
+    }
+
     private clearTokens() {
         localStorage.removeItem(this.accessTokenKey);
         localStorage.removeItem(this.refreshTokenKey);
+        localStorage.removeItem(this.refreshAtKey);
         this.refreshAt = 0;
         this.events = [];
         this.loggedIn = false;
@@ -34,9 +49,11 @@ export class EventService {
 
         const json = await response.json();
 
+        this.refreshAt = Date.now() + json.expiresIn * 1000 * this.refreshCachePercentage;
+
         localStorage.setItem(this.accessTokenKey, json.accessToken);
         localStorage.setItem(this.refreshTokenKey, json.refreshToken);
-        this.refreshAt = Date.now() + json.expiresIn * 1000 * this.refreshCachePercentage;
+        localStorage.setItem(this.refreshAtKey, this.refreshAt.toString());
 
         this.loggedIn = true;
     }
