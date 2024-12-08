@@ -197,6 +197,9 @@ export class EventService {
     async setEventRange(month: number, year: number) {
         await this.refresh();
 
+        this.currentMonth = month;
+        this.currentYear = year;
+
         if (this.loggedIn) {
             this.events = await this.getEvents(month, year);
         }
