@@ -1,1 +1,23 @@
-<p>calendar works!</p>
+<div class="container">
+    <div class="header">
+        <button mat-icon-button (click)="previousMonth()">
+            <mat-icon>chevron_left</mat-icon>
+        </button>
+        <h2>{{ months[eventService.currentMonth - 1] }}, {{ eventService.currentYear }}</h2>
+        <button mat-icon-button (click)="nextMonth()">
+            <mat-icon>chevron_right</mat-icon>
+        </button>
+    </div>
+
+    <div class="names">
+        <h4>Sun</h4>
+        <h4>Mon</h4>
+        <h4>Tue</h4>
+        <h4>Wed</h4>
+        <h4>Thu</h4>
+        <h4>Fri</h4>
+        <h4>Sat</h4>
+    </div>
+
+    <div class="cells"></div>
+</div>

@@ -1,0 +1,31 @@
+.container {
+  height: 100%;
+  display: flex;
+  gap: 0.5em;
+  flex-direction: column;
+}
+
+.header {
+  display: flex;
+  gap: 1em;
+  align-items: center;
+  justify-content: center;
+}
+
+h2 {
+  min-width: 8em;
+  text-align: center;
+}
+
+.names {
+  display: flex;
+  justify-content: space-around;
+}
+
+h4 {
+  margin: 0;
+}
+
+.cells {
+  height: 100%;
+}
