@@ -9,7 +9,7 @@
         </button>
     </div>
 
-    <div class="names">
+    <div class="cells">
         <h4>Sun</h4>
         <h4>Mon</h4>
         <h4>Tue</h4>
@@ -17,7 +17,8 @@
         <h4>Thu</h4>
         <h4>Fri</h4>
         <h4>Sat</h4>
+        <app-cell [events]="[]" [number]="i" *ngFor="let i of dayCount|times"
+                  [style.grid-column-start]="i === 1 ? startOffset : 'auto'">{{ i }}
+        </app-cell>
     </div>
-
-    <div class="cells"></div>
 </div>
