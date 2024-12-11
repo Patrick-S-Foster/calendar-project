@@ -24,6 +24,7 @@ export class CalendarComponent {
 
     protected startOffset = 0;
     protected dayCount = 0;
+    protected selectedDay = 0;
 
     constructor(protected eventService: EventService) {
         this.setProperties();
@@ -32,7 +33,15 @@ export class CalendarComponent {
     private setProperties() {
         this.startOffset = new Date(this.eventService.currentYear, this.eventService.currentMonth - 1).getDay() + 1;
         this.dayCount = new Date(this.eventService.currentYear, this.eventService.currentMonth, 0).getDate();
-        console.log(this.dayCount);
+
+        const today = new Date();
+        if (today.getMonth() + 1 === this.eventService.currentMonth &&
+            today.getFullYear() === this.eventService.currentYear) {
+            this.selectedDay = today.getDate();
+        }
+        else {
+            this.selectedDay = 1;
+        }
     }
 
     async previousMonth() {
@@ -59,5 +68,9 @@ export class CalendarComponent {
 
         await this.eventService.setEventRange(month, year);
         this.setProperties();
+    }
+
+    cellClicked(day: number) {
+        this.selectedDay = day;
     }
 }

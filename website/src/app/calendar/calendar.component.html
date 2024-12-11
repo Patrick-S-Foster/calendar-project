@@ -18,7 +18,8 @@
         <h4>Fri</h4>
         <h4>Sat</h4>
         <app-cell [events]="[]" [number]="i" *ngFor="let i of dayCount|times"
-                  [style.grid-column-start]="i === 1 ? startOffset : 'auto'">{{ i }}
+                  [style.grid-column-start]="i === 1 ? startOffset : 'auto'"
+                  [selected]="i === selectedDay" (click)="cellClicked(i)">{{ i }}
         </app-cell>
     </div>
 </div>

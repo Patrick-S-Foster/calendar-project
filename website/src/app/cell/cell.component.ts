@@ -11,5 +11,6 @@ export class CellComponent {
 
     @Input({required: true}) number = 0;
     @Input({required: true}) events: CalendarEvent[] = [];
+    @Input({required: true}) selected = false;
 
 }
