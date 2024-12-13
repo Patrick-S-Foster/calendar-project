@@ -15,6 +15,7 @@
 h2 {
   min-width: 8em;
   text-align: center;
+  user-select: none;
 }
 
 .names {
@@ -32,4 +33,5 @@ h4 {
   display: grid;
   grid-template-columns: repeat(7, auto);
   grid-template-rows: min-content;
+  user-select: none;
 }

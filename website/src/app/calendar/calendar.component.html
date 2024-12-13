@@ -1,4 +1,8 @@
 <div class="container">
+    <dialog #createEventDialog>
+        <button>Hello</button>
+    </dialog>
+
     <div class="header">
         <button mat-icon-button (click)="previousMonth()">
             <mat-icon>chevron_left</mat-icon>
@@ -19,7 +23,7 @@
         <h4>Sat</h4>
         <app-cell [events]="[]" [number]="i" *ngFor="let i of dayCount|times"
                   [style.grid-column-start]="i === 1 ? startOffset : 'auto'"
-                  [selected]="i === selectedDay" (click)="cellClicked(i)">{{ i }}
+                  [selected]="i === selectedDay" (click)="cellClicked(i)" (dblclick)="showDialog()">{{ i }}
         </app-cell>
     </div>
 </div>
