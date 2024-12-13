@@ -42,8 +42,7 @@ export class CalendarComponent {
         if (today.getMonth() + 1 === this.eventService.currentMonth &&
             today.getFullYear() === this.eventService.currentYear) {
             this.selectedDay = today.getDate();
-        }
-        else {
+        } else {
             this.selectedDay = 1;
         }
     }
