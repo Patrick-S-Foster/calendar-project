@@ -1,0 +1,45 @@
+@use "@angular/material" as mat;
+
+.container {
+  position: relative;
+  padding: 2em;
+  display: flex;
+  flex-direction: column;
+  gap: 1em;
+}
+
+.close-button {
+  position: absolute;
+  top: 0.2em;
+  right: 0.2em;
+}
+
+h2 {
+  margin: 0;
+}
+
+form {
+  display: grid;
+  gap: 1em;
+  grid-template-columns: 1fr 1fr;
+}
+
+.full-width {
+  grid-column: 1 / -1;
+}
+
+.half-width {
+  flex: auto;
+}
+
+.submit-button {
+  grid-column: 2 / -1;
+  max-width: min-content;
+  justify-self: end;
+}
+
+mat-spinner {
+  @include mat.progress-spinner-overrides((
+          active-indicator-color: var(--mat-sys-surface),
+  ));
+}

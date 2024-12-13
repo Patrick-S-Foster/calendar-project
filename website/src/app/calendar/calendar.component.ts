@@ -1,4 +1,4 @@
-import {Component, ElementRef, ViewChild} from '@angular/core';
+import {Component} from '@angular/core';
 import {MatIcon} from "@angular/material/icon";
 import {MatIconButton, MatMiniFabButton} from "@angular/material/button";
 import {EventService} from "../event.service";
@@ -6,6 +6,8 @@ import {NgForOf} from "@angular/common";
 import {TimesPipe} from "../times.pipe";
 import {CellComponent} from "../cell/cell.component";
 import {FormsModule} from "@angular/forms";
+import {MatDialog, MatDialogConfig} from "@angular/material/dialog";
+import {CreateEventFormComponent} from "../create-event-form/create-event-form.component";
 
 @Component({
     selector: 'app-calendar',
@@ -23,15 +25,13 @@ import {FormsModule} from "@angular/forms";
 })
 export class CalendarComponent {
 
-    @ViewChild('createEventDialog') createEventDialog!: ElementRef;
-
     protected readonly months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
 
     protected startOffset = 0;
     protected dayCount = 0;
     protected selectedDay = 0;
 
-    constructor(protected eventService: EventService) {
+    constructor(protected eventService: EventService, private dialog: MatDialog) {
         this.setProperties();
     }
 
@@ -79,6 +79,6 @@ export class CalendarComponent {
     }
 
     showDialog() {
-        this.createEventDialog.nativeElement.showModal();
+        this.dialog.open(CreateEventFormComponent);
     }
 }

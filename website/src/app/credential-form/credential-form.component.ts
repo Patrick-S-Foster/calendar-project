@@ -64,6 +64,10 @@ export class CredentialFormComponent {
     protected submit(event: Event) {
         event.preventDefault();
 
+        if (this.submitting) {
+            return;
+        }
+
         if (this.email.invalid || this.email.value === null || this.password.value === null) {
             this.updateEmailErrorMessage();
             return;

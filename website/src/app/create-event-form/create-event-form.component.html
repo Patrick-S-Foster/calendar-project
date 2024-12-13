@@ -1,0 +1,58 @@
+<div class="container">
+    <button class="close-button" mat-icon-button [mat-dialog-close]="">
+        <mat-icon>close</mat-icon>
+    </button>
+
+    <h2>Create Event</h2>
+
+    <form (ngSubmit)="submit($event)">
+        <mat-form-field class="full-width">
+            <mat-label>Title</mat-label>
+            <input matInput [formControl]="title" required/>
+        </mat-form-field>
+
+        <mat-form-field class="half-width">
+            <mat-label>Start Date</mat-label>
+            <input matInput [matDatepicker]="startDatePicker" [formControl]="start" required/>
+            <mat-hint>DD/MM/YYYY</mat-hint>
+            <mat-datepicker-toggle matIconSuffix [for]="startDatePicker"></mat-datepicker-toggle>
+            <mat-datepicker #startDatePicker></mat-datepicker>
+        </mat-form-field>
+
+        <mat-form-field class="half-width">
+            <mat-label>Start Time</mat-label>
+            <input matInput [matTimepicker]="startTimePicker" [formControl]="start" required/>
+            <mat-hint>hh:mm</mat-hint>
+            <mat-timepicker-toggle matIconSuffix [for]="startTimePicker"></mat-timepicker-toggle>
+            <mat-timepicker #startTimePicker></mat-timepicker>
+        </mat-form-field>
+
+        <mat-form-field class="half-width">
+            <mat-label>End Date</mat-label>
+            <input matInput [matDatepicker]="endDatePicker" [formControl]="end" required/>
+            <mat-hint>DD/MM/YYYY</mat-hint>
+            <mat-datepicker-toggle matIconSuffix [for]="endDatePicker"></mat-datepicker-toggle>
+            <mat-datepicker #endDatePicker></mat-datepicker>
+        </mat-form-field>
+
+        <mat-form-field class="half-width">
+            <mat-label>End Time</mat-label>
+            <input matInput [matTimepicker]="endTimePicker" [formControl]="end" required/>
+            <mat-hint>hh:mm</mat-hint>
+            <mat-timepicker-toggle matIconSuffix [for]="endTimePicker"></mat-timepicker-toggle>
+            <mat-timepicker #endTimePicker></mat-timepicker>
+        </mat-form-field>
+
+        @if (submitFailed) {
+            <mat-error>An error occurred, please try again.</mat-error>
+        }
+
+        <button mat-flat-button matSuffix type="submit" class="submit-button">
+            @if (submitting) {
+                <mat-spinner diameter="30"></mat-spinner>
+            } @else {
+                Create
+            }
+        </button>
+    </form>
+</div>
