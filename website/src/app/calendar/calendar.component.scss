@@ -1,8 +1,14 @@
+$small: 500px;
+
 .container {
   height: 100%;
   display: flex;
   gap: 0.5em;
   flex-direction: column;
+
+  @media screen and (max-width: $small) {
+    font-size: 0.8em;
+  }
 }
 
 .header {
@@ -10,6 +16,11 @@
   gap: 1em;
   align-items: center;
   justify-content: center;
+
+  @media screen and (max-width: $small) {
+    font-size: 0.9em;
+    gap: 0;
+  }
 }
 
 h2 {
