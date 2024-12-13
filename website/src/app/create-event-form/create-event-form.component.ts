@@ -1,4 +1,4 @@
-import {Component} from '@angular/core';
+import {Component, Inject} from '@angular/core';
 import {MatButton, MatIconButton} from "@angular/material/button";
 import {MatIcon} from "@angular/material/icon";
 import {FormControl, FormsModule, ReactiveFormsModule, Validators} from "@angular/forms";
@@ -12,7 +12,7 @@ import {
     MAT_NATIVE_DATE_FORMATS,
     MatNativeDateModule
 } from "@angular/material/core";
-import {MatDialogClose, MatDialogRef} from "@angular/material/dialog";
+import {MAT_DIALOG_DATA, MatDialogClose, MatDialogRef} from "@angular/material/dialog";
 import {CustomDateAdapter} from "./CustomDateAdapter";
 import {MatTimepicker, MatTimepickerInput, MatTimepickerToggle} from "@angular/material/timepicker";
 import {MatProgressSpinner} from "@angular/material/progress-spinner";
@@ -51,12 +51,14 @@ export class CreateEventFormComponent {
     private readonly millisecondsPerHour = 3600000;
 
     title = new FormControl('', [Validators.required]);
-    start = new FormControl(new Date(), [Validators.required]);
-    end = new FormControl(new Date(new Date().getTime() + this.millisecondsPerHour), [Validators.required]);
+    start: FormControl<Date | null>;
+    end: FormControl<Date | null>;
     submitting = false;
     submitFailed = false;
 
-    constructor(private eventService: EventService, private dialogRef: MatDialogRef<CreateEventFormComponent>) {
+    constructor(private eventService: EventService, private dialogRef: MatDialogRef<CreateEventFormComponent>, @Inject(MAT_DIALOG_DATA) data: Date) {
+        this.start = new FormControl(data, [Validators.required]);
+        this.end = new FormControl(new Date(data.getTime() + this.millisecondsPerHour), [Validators.required])
     }
 
     async submit($event: Event) {

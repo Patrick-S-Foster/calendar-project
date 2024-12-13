@@ -25,6 +25,9 @@ import {CreateEventFormComponent} from "../create-event-form/create-event-form.c
 })
 export class CalendarComponent {
 
+    private readonly defaultHour = 9;
+    private readonly defaultMinute = 0;
+
     protected readonly months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
 
     protected startOffset = 0;
@@ -79,6 +82,18 @@ export class CalendarComponent {
     }
 
     showDialog() {
-        this.dialog.open(CreateEventFormComponent);
+        const currentYear = new Date().getFullYear();
+        const currentMonth = new Date().getMonth() + 1;
+        const currentDay = new Date().getDate();
+
+        let date: Date;
+
+        if (currentYear === this.eventService.currentYear && currentMonth === this.eventService.currentMonth && currentDay === this.selectedDay) {
+            date = new Date();
+        } else {
+            date = new Date(this.eventService.currentYear, this.eventService.currentMonth - 1, this.selectedDay, this.defaultHour, this.defaultMinute);
+        }
+
+        this.dialog.open(CreateEventFormComponent, {data: date});
     }
 }
