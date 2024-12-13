@@ -97,33 +97,41 @@ export class EventService {
     }
 
     async register(email: string, password: string): Promise<string[]> {
-        await this.logout();
+        try {
+            await this.logout();
 
-        const response = await fetch(environment.registerUrl, {
-            method: 'POST',
-            headers: this.getHeaders(),
-            body: JSON.stringify({email, password})
-        });
+            const response = await fetch(environment.registerUrl, {
+                method: 'POST',
+                headers: this.getHeaders(),
+                body: JSON.stringify({email, password})
+            });
 
-        if (response.ok) {
-            return [];
+            if (response.ok) {
+                return [];
+            }
+
+            const json = await response.json();
+            return Object.values(json.errors);
+        } catch (error: any) {
+            return [`An error occurred with the following message: '${error.message}'`];
         }
-
-        const json = await response.json();
-        return Object.values(json.errors);
     }
 
     async login(email: string, password: string) {
-        await this.logout();
+        try {
+            await this.logout();
 
-        const response = await fetch(environment.loginUrl, {
-            method: 'POST',
-            headers: this.getHeaders(),
-            body: JSON.stringify({email, password})
-        });
+            const response = await fetch(environment.loginUrl, {
+                method: 'POST',
+                headers: this.getHeaders(),
+                body: JSON.stringify({email, password})
+            });
 
-        await this.setTokens(response);
-        return this.loggedIn;
+            await this.setTokens(response);
+            return this.loggedIn;
+        } catch {
+            return false;
+        }
     }
 
     private stringToDate(dateString: string) {
@@ -148,25 +156,29 @@ export class EventService {
     }
 
     async create(title: string, start: Date, end: Date) {
-        await this.refresh();
+        try {
+            await this.refresh();
 
-        if (!this.loggedIn) {
+            if (!this.loggedIn) {
+                return false;
+            }
+
+            const response = await fetch(environment.createUrl, {
+                method: 'POST',
+                headers: this.getHeaders(),
+                body: JSON.stringify({
+                    title: title,
+                    start: this.dateToString(start),
+                    end: this.dateToString(end),
+                })
+            });
+
+            await this.refreshEvents();
+
+            return response.ok;
+        } catch {
             return false;
         }
-
-        const response = await fetch(environment.createUrl, {
-            method: 'POST',
-            headers: this.getHeaders(),
-            body: JSON.stringify({
-                title: title,
-                start: this.dateToString(start),
-                end: this.dateToString(end),
-            })
-        });
-
-        await this.refreshEvents();
-
-        return response.ok;
     }
 
     private async getEvents(month: number, year: number): Promise<CalendarEvent[]> {
@@ -206,35 +218,43 @@ export class EventService {
     }
 
     async update(id: number, title: string, start: Date, end: Date) {
-        await this.refresh();
+        try {
+            await this.refresh();
 
-        if (!this.loggedIn) {
+            if (!this.loggedIn) {
+                return false;
+            }
+
+            const response = await fetch(`${environment.updateUrl}/${id}`, {
+                method: 'PUT',
+                headers: this.getHeaders(),
+                body: JSON.stringify({
+                    title: title,
+                    start: this.dateToString(start),
+                    end: this.dateToString(end),
+                })
+            });
+            return response.ok;
+        } catch {
             return false;
         }
-
-        const response = await fetch(`${environment.updateUrl}/${id}`, {
-            method: 'PUT',
-            headers: this.getHeaders(),
-            body: JSON.stringify({
-                title: title,
-                start: this.dateToString(start),
-                end: this.dateToString(end),
-            })
-        });
-        return response.ok;
     }
 
     async delete(id: number) {
-        await this.refresh();
+        try {
+            await this.refresh();
 
-        if (!this.loggedIn) {
+            if (!this.loggedIn) {
+                return false;
+            }
+
+            const response = await fetch(`${environment.deleteUrl}/${id}`, {
+                method: 'DELETE',
+                headers: this.getHeaders()
+            });
+            return response.ok;
+        } catch {
             return false;
         }
-
-        const response = await fetch(`${environment.deleteUrl}/${id}`, {
-            method: 'DELETE',
-            headers: this.getHeaders()
-        });
-        return response.ok;
     }
 }
