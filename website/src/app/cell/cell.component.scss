@@ -1,3 +1,14 @@
+.cell {
+  cursor: pointer;
+  height: 100%;
+  border-radius: 0.5em;
+  transition: background-color 0.2s;
+
+  &:hover {
+    background-color: rgba(0, 0, 0, 0.2);
+  }
+}
+
 h5 {
   text-align: center;
   margin: auto;
