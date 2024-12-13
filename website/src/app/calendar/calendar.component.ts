@@ -6,7 +6,7 @@ import {NgForOf} from "@angular/common";
 import {TimesPipe} from "../times.pipe";
 import {CellComponent} from "../cell/cell.component";
 import {FormsModule} from "@angular/forms";
-import {MatDialog, MatDialogConfig} from "@angular/material/dialog";
+import {MatDialog} from "@angular/material/dialog";
 import {CreateEventFormComponent} from "../create-event-form/create-event-form.component";
 
 @Component({
@@ -38,8 +38,18 @@ export class CalendarComponent {
         this.setProperties();
     }
 
+    protected getTrailingEmptyCellCount() {
+        const remainder = (this.startOffset + this.dayCount) % 7;
+
+        if (remainder === 0) {
+            return 0;
+        }
+
+        return 7 - remainder;
+    }
+
     private setProperties() {
-        this.startOffset = new Date(this.eventService.currentYear, this.eventService.currentMonth - 1).getDay() + 1;
+        this.startOffset = new Date(this.eventService.currentYear, this.eventService.currentMonth - 1).getDay();
         this.dayCount = new Date(this.eventService.currentYear, this.eventService.currentMonth, 0).getDate();
 
         const today = new Date();

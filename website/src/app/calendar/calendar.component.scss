@@ -56,3 +56,15 @@ h4 {
   grid-template-rows: min-content;
   user-select: none;
 }
+
+.filler-cell {
+  background-color: rgba(0, 0, 0, 0.15);
+}
+
+.first-filler-cell {
+  border-radius: 0.5em 0 0 0.5em;
+}
+
+.last-filler-cell {
+  border-radius: 0 0.5em 0.5em 0;
+}
