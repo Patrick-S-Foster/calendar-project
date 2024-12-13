@@ -12,6 +12,7 @@ $small: 500px;
 }
 
 .header {
+  position: relative;
   display: flex;
   gap: 1em;
   align-items: center;
@@ -27,6 +28,15 @@ h2 {
   min-width: 8em;
   text-align: center;
   user-select: none;
+}
+
+.fab {
+  position: absolute;
+  right: 2em;
+
+  @media screen and (max-width: $small) {
+    right: 1em;
+  }
 }
 
 .names {

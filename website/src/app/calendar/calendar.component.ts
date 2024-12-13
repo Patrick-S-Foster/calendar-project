@@ -1,6 +1,6 @@
 import {Component, ElementRef, ViewChild} from '@angular/core';
 import {MatIcon} from "@angular/material/icon";
-import {MatIconButton} from "@angular/material/button";
+import {MatIconButton, MatMiniFabButton} from "@angular/material/button";
 import {EventService} from "../event.service";
 import {NgForOf} from "@angular/common";
 import {TimesPipe} from "../times.pipe";
@@ -15,7 +15,8 @@ import {FormsModule} from "@angular/forms";
         NgForOf,
         TimesPipe,
         CellComponent,
-        FormsModule
+        FormsModule,
+        MatMiniFabButton
     ],
     templateUrl: './calendar.component.html',
     styleUrl: './calendar.component.scss'
@@ -78,7 +79,6 @@ export class CalendarComponent {
     }
 
     showDialog() {
-        console.log(this.createEventDialog);
         this.createEventDialog.nativeElement.showModal();
     }
 }
