@@ -64,6 +64,17 @@ export class CalendarComponent implements AfterViewInit {
             event.end.getMonth() + 1 >= this.eventService.currentMonth &&
             event.start.getDate() <= day &&
             event.end.getDate() >= day)
+            .sort((first, second) => {
+                if (first.start < second.start) {
+                    return -1;
+                }
+
+                if (first.end < second.end) {
+                    return 1;
+                }
+
+                return 0;
+            });
     }
 
     private setProperties() {

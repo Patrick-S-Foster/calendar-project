@@ -1,9 +1,12 @@
+$small: 550px;
+
 .cell {
   cursor: pointer;
   height: 100%;
   border-radius: 0.5em;
   transition: background-color 0.2s;
-  overflow: auto;
+  overflow-x: hidden;
+  overflow-y: auto;
 
   &:hover {
     background-color: rgba(0, 0, 0, 0.2);
@@ -13,8 +16,8 @@
 h5 {
   position: sticky;
   top: 0;
+  margin: 0 0 0.25em 0;
   text-align: center;
-  margin: auto;
   clip-path: circle();
   padding: 0.3em;
   background-color: color-mix(in hsl, var(--mat-sys-background), transparent 25%);
@@ -27,4 +30,52 @@ h5 {
 
 .events {
   max-height: 100%;
+  list-style: none;
+  margin: 0;
+  padding: 0 0.25em;
+
+  li:not(:last-child) {
+    margin-bottom: 0.2em;
+  }
+}
+
+.event {
+  display: flex;
+  align-items: center;
+  gap: 0.1em;
+  font-size: 0.75em;
+  width: 100%;
+  background: var(--mat-sys-primary);
+  color: var(--mat-sys-on-primary);
+  border-radius: 0.25em;
+  transition: box-shadow 0.2s, transform 0.2s;
+
+  &:hover {
+    transform: translateY(-0.1em);
+    box-shadow: 0 0 5px black;
+  }
+}
+
+.event-title,
+.start-time {
+  margin-top: 0.1em;
+  margin-bottom: 0.1em;
+}
+
+.event-title {
+  margin-left: 0.25em;
+  flex: 1;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+.start-time {
+  margin-right: 0.25em;
+  flex: 0;
+  font-size: 0.8em;
+
+  @media screen and (max-width: $small) {
+    display: none;
+  }
 }

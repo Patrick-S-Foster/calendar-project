@@ -1,9 +1,16 @@
 <div class="cell">
     <h5 [class.selected]="selected">{{ number }}</h5>
 
-    <div class="events">
+    <ul class="events">
         @for (event of events; track event.id) {
-            <div>{{ event.title }} [{{ event.id }}]</div>
+            <li>
+                <div class="event">
+                    <p class="event-title">{{ event.title }}</p>
+                    <p class="start-time">
+                        {{ event.start.getHours().toString().padStart(2, '0') }}:{{ event.start.getMinutes().toString().padStart(2, '0') }}
+                    </p>
+                </div>
+            </li>
         }
-    </div>
+    </ul>
 </div>
