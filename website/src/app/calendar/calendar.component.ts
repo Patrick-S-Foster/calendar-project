@@ -1,4 +1,4 @@
-import {Component} from '@angular/core';
+import {AfterViewInit, Component, ElementRef, ViewChild} from '@angular/core';
 import {MatIcon} from "@angular/material/icon";
 import {MatIconButton, MatMiniFabButton} from "@angular/material/button";
 import {EventService} from "../event.service";
@@ -23,12 +23,14 @@ import {CreateEventFormComponent} from "../create-event-form/create-event-form.c
     templateUrl: './calendar.component.html',
     styleUrl: './calendar.component.scss'
 })
-export class CalendarComponent {
+export class CalendarComponent implements AfterViewInit {
 
     private readonly defaultHour = 9;
     private readonly defaultMinute = 0;
 
     protected readonly months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+
+    @ViewChild('cells') cells!: ElementRef;
 
     protected startOffset = 0;
     protected dayCount = 0;
@@ -36,6 +38,12 @@ export class CalendarComponent {
 
     constructor(protected eventService: EventService, private dialog: MatDialog) {
         this.setProperties();
+    }
+
+    async ngAfterViewInit() {
+        this.setStyleVariables();
+        new ResizeObserver(this.setStyleVariables.bind(this)).observe(this.cells.nativeElement);
+        await this.eventService.refreshEvents();
     }
 
     protected getTrailingEmptyCellCount() {
@@ -46,6 +54,16 @@ export class CalendarComponent {
         }
 
         return 7 - remainder;
+    }
+
+    protected getEventsByDay(day: number) {
+        return this.eventService.events.filter(event =>
+            event.start.getFullYear() <= this.eventService.currentYear &&
+            event.end.getFullYear() >= this.eventService.currentYear &&
+            event.start.getMonth() + 1 <= this.eventService.currentMonth &&
+            event.end.getMonth() + 1 >= this.eventService.currentMonth &&
+            event.start.getDate() <= day &&
+            event.end.getDate() >= day)
     }
 
     private setProperties() {
@@ -72,6 +90,7 @@ export class CalendarComponent {
 
         await this.eventService.setEventRange(month, year);
         this.setProperties();
+        this.setStyleVariables();
     }
 
     async nextMonth() {
@@ -85,6 +104,7 @@ export class CalendarComponent {
 
         await this.eventService.setEventRange(month, year);
         this.setProperties();
+        this.setStyleVariables();
     }
 
     cellClicked(day: number) {
@@ -105,5 +125,14 @@ export class CalendarComponent {
         }
 
         this.dialog.open(CreateEventFormComponent, {data: date});
+    }
+
+    protected setStyleVariables() {
+        const verticalCount = Math.ceil((this.startOffset + this.dayCount) / 7);
+        const height = Math.floor(
+            (window.innerHeight - this.cells.nativeElement.getBoundingClientRect().top) / verticalCount);
+
+        this.cells.nativeElement.style.setProperty('--vertical-count', verticalCount.toString());
+        this.cells.nativeElement.style.setProperty('--height', `${height}px`);
     }
 }

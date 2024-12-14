@@ -3,6 +3,7 @@
   height: 100%;
   border-radius: 0.5em;
   transition: background-color 0.2s;
+  overflow: auto;
 
   &:hover {
     background-color: rgba(0, 0, 0, 0.2);
@@ -10,14 +11,20 @@
 }
 
 h5 {
+  position: sticky;
+  top: 0;
   text-align: center;
   margin: auto;
   clip-path: circle();
   padding: 0.3em;
+  background-color: color-mix(in hsl, var(--mat-sys-background), transparent 25%);
+
+  &.selected {
+    color: var(--mat-sys-on-primary);
+    background-color: var(--mat-sys-primary);
+  }
 }
 
-.selected {
-  color: var(--mat-sys-on-primary);
-  background-color: var(--mat-sys-primary);
+.events {
+  max-height: 100%;
 }
-

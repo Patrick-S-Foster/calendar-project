@@ -1,3 +1,9 @@
 <div class="cell">
     <h5 [class.selected]="selected">{{ number }}</h5>
+
+    <div class="events">
+        @for (event of events; track event.id) {
+            <div>{{ event.title }} [{{ event.id }}]</div>
+        }
+    </div>
 </div>

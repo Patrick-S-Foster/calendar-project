@@ -13,7 +13,7 @@
         </button>
     </div>
 
-    <div class="cells">
+    <div class="days">
         <h4>Sun</h4>
         <h4>Mon</h4>
         <h4>Tue</h4>
@@ -21,8 +21,11 @@
         <h4>Thu</h4>
         <h4>Fri</h4>
         <h4>Sat</h4>
+    </div>
+
+    <div class="cells" #cells>
         <div *ngFor="let i of startOffset|times" class="filler-cell" [class.last-filler-cell]="i === startOffset"></div>
-        <app-cell [events]="[]" [number]="i" *ngFor="let i of dayCount|times"
+        <app-cell [events]="getEventsByDay(i)" [number]="i" *ngFor="let i of dayCount|times"
                   [selected]="i === selectedDay" (click)="cellClicked(i)" (dblclick)="showDialog()">{{ i }}
         </app-cell>
         <div *ngFor="let i of getTrailingEmptyCellCount()|times" class="filler-cell"

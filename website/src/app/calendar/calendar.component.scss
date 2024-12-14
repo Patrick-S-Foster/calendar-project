@@ -45,16 +45,23 @@ h2 {
 }
 
 h4 {
-  margin: 0 0 0.5em 0;
+  margin: 0;
   text-align: center;
 }
 
+.days,
 .cells {
-  height: 100%;
   display: grid;
-  grid-template-columns: repeat(7, auto);
-  grid-template-rows: min-content;
+  grid-template-columns: repeat(7, calc(100% / 7));
   user-select: none;
+}
+
+.cells {
+  --vertical-count: 0;
+  --height: 0;
+
+  height: 100%;
+  grid-template-rows: repeat(var(--vertical-count), var(--height));
 }
 
 .filler-cell {
