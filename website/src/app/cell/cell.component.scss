@@ -22,7 +22,7 @@ $hoverColor: #cccccc;
   position: sticky;
   top: 0;
   transition: background-color 0.2s;
-  background-color: var(--mat-sys-background);
+  background-color: white;
 }
 
 h5 {
@@ -30,7 +30,7 @@ h5 {
   text-align: center;
   clip-path: circle();
   padding: 0.3em;
-  background-color: color-mix(in hsl, var(--mat-sys-background), transparent 25%);
+  background-color: color-mix(in hsl, white, transparent 25%);
 
   &.selected {
     color: var(--mat-sys-on-primary);
