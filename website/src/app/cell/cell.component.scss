@@ -1,4 +1,5 @@
 $small: 550px;
+$hoverColor: #cccccc;
 
 .cell {
   cursor: pointer;
@@ -9,13 +10,22 @@ $small: 550px;
   overflow-y: auto;
 
   &:hover {
-    background-color: rgba(0, 0, 0, 0.2);
+    background-color: $hoverColor;
+
+    .header {
+      background-color: $hoverColor;
+    }
   }
 }
 
-h5 {
+.header {
   position: sticky;
   top: 0;
+  transition: background-color 0.2s;
+  background-color: var(--mat-sys-background);
+}
+
+h5 {
   margin: 0 0 0.25em 0;
   text-align: center;
   clip-path: circle();
@@ -51,7 +61,6 @@ h5 {
   transition: box-shadow 0.2s, transform 0.2s;
 
   &:hover {
-    transform: translateY(-0.1em);
     box-shadow: 0 0 5px black;
   }
 }

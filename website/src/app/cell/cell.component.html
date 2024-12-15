@@ -1,5 +1,7 @@
 <div class="cell">
-    <h5 [class.selected]="selected">{{ number }}</h5>
+    <div class="header">
+        <h5 [class.selected]="selected">{{ number }}</h5>
+    </div>
 
     <ul class="events">
         @for (event of events; track event.id) {
