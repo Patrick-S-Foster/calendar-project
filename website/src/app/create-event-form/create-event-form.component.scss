@@ -1,0 +1,67 @@
+@use "@angular/material" as mat;
+
+$smallSize: 440px;
+
+.container {
+  position: relative;
+  padding: 2em;
+  display: flex;
+  flex-direction: column;
+  gap: 1em;
+  max-height: calc(100dvh - 4em);
+  overflow: auto;
+}
+
+.buttons {
+  position: absolute;
+  top: 0.25em;
+  right: 0.25em;
+  display: flex;
+  flex-direction: row-reverse;
+}
+
+.speech-to-event-button {
+  pointer-events: auto;
+
+  @include mat.icon-button-overrides((
+          icon-color: var(--mat-sys-primary),
+  ));
+}
+
+h2 {
+  margin: 0;
+}
+
+form {
+  display: grid;
+  gap: 1em;
+  grid-template-columns: 1fr 1fr;
+
+  @media screen and (max-width: $smallSize) {
+    gap: 0.5em;
+  }
+}
+
+.full-width {
+  grid-column: 1 / -1;
+}
+
+.half-width {
+  flex: auto;
+
+  @media screen and (max-width: $smallSize) {
+    grid-column: 1 / -1;
+  }
+}
+
+.submit-button {
+  grid-column: 2 / -1;
+  max-width: min-content;
+  justify-self: end;
+}
+
+mat-spinner {
+  @include mat.progress-spinner-overrides((
+          active-indicator-color: var(--mat-sys-surface),
+  ));
+}

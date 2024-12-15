@@ -1,0 +1,21 @@
+<div class="container">
+    <button class="close-button" mat-icon-button [mat-dialog-close]="">
+        <mat-icon>close</mat-icon>
+    </button>
+
+    <h2>
+        @if (speechService.error().length > 0) {
+            An error occurred...
+        } @else {
+            {{ speechService.submittingToAi ? 'Your speech is being processed!' : 'Speak your event out loud now!' }}
+        }
+    </h2>
+
+    @if (speechService.error().length > 0) {
+        <mat-error>{{ speechService.error() }}</mat-error>
+
+        <button mat-flat-button (click)="start()">Try Again</button>
+    } @else {
+        <mat-spinner class="spinner"></mat-spinner>
+    }
+</div>

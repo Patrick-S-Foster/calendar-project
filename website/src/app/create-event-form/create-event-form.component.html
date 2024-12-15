@@ -1,0 +1,50 @@
+<div class="container">
+    <div class="buttons">
+        <button mat-icon-button [mat-dialog-close]="">
+            <mat-icon>close</mat-icon>
+        </button>
+
+        <button [title]="!speechService.isAvailable() ? 'The Web Speech API is not available on this browser' : 'Use speech with AI to create an event'"
+                class="speech-to-event-button" mat-icon-button (click)="speechToEvent()"
+                [disabled]="!speechService.isAvailable()">
+            <mat-icon>mic</mat-icon>
+        </button>
+    </div>
+
+    <h2>Create Event</h2>
+
+    <form (ngSubmit)="submit($event)">
+        <mat-form-field class="full-width">
+            <mat-label>Title</mat-label>
+            <input matInput [formControl]="title" required/>
+        </mat-form-field>
+
+        <mat-form-field class="half-width">
+            <mat-label>Date</mat-label>
+            <input matInput [matDatepicker]="datePicker" [formControl]="dateTime" required/>
+            <mat-hint>DD/MM/YYYY</mat-hint>
+            <mat-datepicker-toggle matIconSuffix [for]="datePicker"></mat-datepicker-toggle>
+            <mat-datepicker #datePicker></mat-datepicker>
+        </mat-form-field>
+
+        <mat-form-field class="half-width">
+            <mat-label>Time</mat-label>
+            <input matInput [matTimepicker]="timePicker" [formControl]="dateTime" required/>
+            <mat-hint>hh:mm</mat-hint>
+            <mat-timepicker-toggle matIconSuffix [for]="timePicker"></mat-timepicker-toggle>
+            <mat-timepicker #timePicker></mat-timepicker>
+        </mat-form-field>
+
+        @if (submitFailed) {
+            <mat-error>An error occurred, please try again.</mat-error>
+        }
+
+        <button mat-flat-button matSuffix type="submit" class="submit-button">
+            @if (submitting) {
+                <mat-spinner diameter="30"></mat-spinner>
+            } @else {
+                Create
+            }
+        </button>
+    </form>
+</div>

@@ -1,0 +1,17 @@
+.container {
+  position: relative;
+  padding: 2em;
+  display: flex;
+  flex-direction: column;
+  gap: 1em;
+}
+
+.close-button {
+  position: absolute;
+  top: 0.25em;
+  right: 0.25em;
+}
+
+.spinner {
+  margin: auto;
+}
