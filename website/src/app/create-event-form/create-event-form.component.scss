@@ -17,6 +17,8 @@
 }
 
 .speech-to-event-button {
+  pointer-events: auto;
+
   @include mat.icon-button-overrides((
           icon-color: var(--mat-sys-primary),
   ));

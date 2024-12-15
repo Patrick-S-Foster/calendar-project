@@ -4,8 +4,9 @@
             <mat-icon>close</mat-icon>
         </button>
 
-        <button title="Use speech with AI to create an event" class="speech-to-event-button" mat-icon-button
-                (click)="speechToEvent()" [disabled]="speechRecognition === null || speechRecognition === undefined">
+        <button [title]="speechRecognition === null || speechRecognition === undefined ? 'The Web Speech API is not available on this browser' : 'Use speech with AI to create an event'"
+                class="speech-to-event-button" mat-icon-button (click)="speechToEvent()"
+                [disabled]="speechRecognition === null || speechRecognition === undefined">
             <mat-icon>mic</mat-icon>
         </button>
     </div>
