@@ -120,6 +120,10 @@ export class CalendarComponent implements AfterViewInit {
     }
 
     showDialog() {
+        if (this.dialog.openDialogs.length > 0) {
+            return;
+        }
+
         const currentYear = new Date().getFullYear();
         const currentMonth = new Date().getMonth() + 1;
         const currentDay = new Date().getDate();

@@ -6,7 +6,7 @@
     <ul class="events">
         @for (event of events; track event.id) {
             <li>
-                <div class="event">
+                <div class="event" (click)="openOverview(event)">
                     <p class="event-title">{{ event.title }}</p>
                     <p class="time">
                         {{ event.dateTime.getHours().toString().padStart(2, '0') }}:{{ event.dateTime.getMinutes().toString().padStart(2, '0') }}

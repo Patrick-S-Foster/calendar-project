@@ -231,6 +231,8 @@ export class EventService {
                     dateTime: this.dateToString(dateTime)
                 })
             });
+
+            await this.refreshEvents();
             return response.ok;
         } catch {
             return false;
@@ -249,6 +251,8 @@ export class EventService {
                 method: 'DELETE',
                 headers: this.getHeaders()
             });
+
+            await this.refreshEvents();
             return response.ok;
         } catch {
             return false;

@@ -1,5 +1,7 @@
 import {Component, Input} from '@angular/core';
 import {CalendarEvent} from "../calendarEvent";
+import {MatDialog} from "@angular/material/dialog";
+import {EventOverviewComponent} from "../event-overview/event-overview.component";
 
 @Component({
     selector: 'app-cell',
@@ -13,4 +15,10 @@ export class CellComponent {
     @Input({required: true}) events: CalendarEvent[] = [];
     @Input({required: true}) selected = false;
 
+    constructor(private dialog: MatDialog) {
+    }
+
+    openOverview(event: CalendarEvent) {
+        this.dialog.open(EventOverviewComponent, {data: event});
+    }
 }

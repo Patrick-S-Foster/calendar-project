@@ -1,0 +1,63 @@
+<div class="container">
+    <div class="buttons">
+        <button mat-icon-button [mat-dialog-close]="">
+            <mat-icon>close</mat-icon>
+        </button>
+
+        @if (!editing) {
+            <button mat-icon-button (click)="delete()" class="delete-button">
+                <mat-icon>delete</mat-icon>
+            </button>
+
+            <button mat-icon-button (click)="edit()" class="edit-button">
+                <mat-icon>edit</mat-icon>
+            </button>
+        }
+    </div>
+
+    @if (editing) {
+        <h2>Edit Event</h2>
+
+        <form (ngSubmit)="submit($event)">
+            <mat-form-field class="full-width">
+                <mat-label>Title</mat-label>
+                <input matInput [formControl]="title" required/>
+            </mat-form-field>
+
+            <mat-form-field class="half-width">
+                <mat-label>Date</mat-label>
+                <input matInput [matDatepicker]="datePicker" [formControl]="dateTime" required/>
+                <mat-hint>DD/MM/YYYY</mat-hint>
+                <mat-datepicker-toggle matIconSuffix [for]="datePicker"></mat-datepicker-toggle>
+                <mat-datepicker #datePicker></mat-datepicker>
+            </mat-form-field>
+
+            <mat-form-field class="half-width">
+                <mat-label>Time</mat-label>
+                <input matInput [matTimepicker]="timePicker" [formControl]="dateTime" required/>
+                <mat-hint>hh:mm</mat-hint>
+                <mat-timepicker-toggle matIconSuffix [for]="timePicker"></mat-timepicker-toggle>
+                <mat-timepicker #timePicker></mat-timepicker>
+            </mat-form-field>
+
+            @if (submitFailed) {
+                <mat-error>An error occurred, please try again.</mat-error>
+            }
+
+            <button mat-stroked-button class="cancel-button" type="button" (click)="cancel()">Cancel</button>
+
+            <button mat-flat-button matSuffix type="submit" class="update-button">
+                @if (submitting) {
+                    <mat-spinner diameter="30"></mat-spinner>
+                } @else {
+                    Update
+                }
+            </button>
+        </form>
+    } @else {
+        <h2>{{ calendarEvent.title }}</h2>
+
+        <p>{{ calendarEvent.dateTime.getHours().toString().padStart(2, '0') }}:{{ calendarEvent.dateTime.getMinutes().toString().padStart(2, '0') }}<br>
+            {{ calendarEvent.dateTime.toDateString() }}</p>
+    }
+</div>
