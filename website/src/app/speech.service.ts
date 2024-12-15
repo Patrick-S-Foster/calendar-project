@@ -71,6 +71,8 @@ export class SpeechService {
 
         this.applicationRef.tick();
 
+        this.error.set('');
+
         this.aiService.generate(event.results[0][0].transcript).then(data => {
             this.submittingToAi = false;
             this.applicationRef.tick();
