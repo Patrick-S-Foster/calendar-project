@@ -49,14 +49,18 @@ import {SpeechService} from "../speech.service";
 })
 export class CreateEventFormComponent {
 
-    title = new FormControl('', [Validators.required]);
+    title: FormControl<string | null>;
     dateTime: FormControl<Date | null>;
     submitting = false;
     submitFailed = false;
 
     constructor(private eventService: EventService, private dialogRef: MatDialogRef<CreateEventFormComponent>,
-                @Inject(MAT_DIALOG_DATA) data: Date, protected speechService: SpeechService) {
-        this.dateTime = new FormControl(data, [Validators.required]);
+                @Inject(MAT_DIALOG_DATA) data: {
+                    title: string | null,
+                    date: Date
+                }, protected speechService: SpeechService) {
+        this.title = new FormControl(data.title, [Validators.required]);
+        this.dateTime = new FormControl(data.date, [Validators.required]);
     }
 
     async submit($event: Event) {
