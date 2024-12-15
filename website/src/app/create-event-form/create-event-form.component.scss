@@ -1,11 +1,15 @@
 @use "@angular/material" as mat;
 
+$smallSize: 440px;
+
 .container {
   position: relative;
   padding: 2em;
   display: flex;
   flex-direction: column;
   gap: 1em;
+  max-height: calc(100dvh - 4em);
+  overflow: auto;
 }
 
 .buttons {
@@ -32,6 +36,10 @@ form {
   display: grid;
   gap: 1em;
   grid-template-columns: 1fr 1fr;
+
+  @media screen and (max-width: $smallSize) {
+    gap: 0.5em;
+  }
 }
 
 .full-width {
@@ -40,6 +48,10 @@ form {
 
 .half-width {
   flex: auto;
+
+  @media screen and (max-width: $smallSize) {
+    grid-column: 1 / -1;
+  }
 }
 
 .submit-button {
