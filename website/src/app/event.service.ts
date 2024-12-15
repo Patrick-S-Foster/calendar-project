@@ -155,7 +155,7 @@ export class EventService {
         return `${year}-${month}-${day}T${hour}:${minute}:${second}`;
     }
 
-    async create(title: string, start: Date, end: Date) {
+    async create(title: string, dateTime: Date) {
         try {
             await this.refresh();
 
@@ -168,8 +168,7 @@ export class EventService {
                 headers: this.getHeaders(),
                 body: JSON.stringify({
                     title: title,
-                    start: this.dateToString(start),
-                    end: this.dateToString(end),
+                    dateTime: this.dateToString(dateTime)
                 })
             });
 
@@ -192,12 +191,11 @@ export class EventService {
         }
 
         const events = await response.json();
-        return events.map((event: { id: number, title: string, start: string, end: string }) => {
+        return events.map((event: { id: number, title: string, dateTime: string }) => {
             return {
                 id: event.id,
                 title: event.title,
-                start: this.stringToDate(event.start),
-                end: this.stringToDate(event.end)
+                dateTime: this.stringToDate(event.dateTime)
             };
         });
     }
@@ -217,7 +215,7 @@ export class EventService {
         }
     }
 
-    async update(id: number, title: string, start: Date, end: Date) {
+    async update(id: number, title: string, dateTime: Date) {
         try {
             await this.refresh();
 
@@ -230,8 +228,7 @@ export class EventService {
                 headers: this.getHeaders(),
                 body: JSON.stringify({
                     title: title,
-                    start: this.dateToString(start),
-                    end: this.dateToString(end),
+                    dateTime: this.dateToString(dateTime)
                 })
             });
             return response.ok;

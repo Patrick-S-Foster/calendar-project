@@ -58,18 +58,15 @@ export class CalendarComponent implements AfterViewInit {
 
     protected getEventsByDay(day: number) {
         return this.eventService.events.filter(event =>
-            event.start.getFullYear() <= this.eventService.currentYear &&
-            event.end.getFullYear() >= this.eventService.currentYear &&
-            event.start.getMonth() + 1 <= this.eventService.currentMonth &&
-            event.end.getMonth() + 1 >= this.eventService.currentMonth &&
-            event.start.getDate() <= day &&
-            event.end.getDate() >= day)
+            event.dateTime.getFullYear() === this.eventService.currentYear &&
+            event.dateTime.getMonth() + 1 === this.eventService.currentMonth &&
+            event.dateTime.getDate() === day)
             .sort((first, second) => {
-                if (first.start < second.start) {
+                if (first.dateTime < second.dateTime) {
                     return -1;
                 }
 
-                if (first.end < second.end) {
+                if (first.dateTime < second.dateTime) {
                     return 1;
                 }
 

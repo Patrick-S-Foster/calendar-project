@@ -8,8 +8,8 @@
             <li>
                 <div class="event">
                     <p class="event-title">{{ event.title }}</p>
-                    <p class="start-time">
-                        {{ event.start.getHours().toString().padStart(2, '0') }}:{{ event.start.getMinutes().toString().padStart(2, '0') }}
+                    <p class="time">
+                        {{ event.dateTime.getHours().toString().padStart(2, '0') }}:{{ event.dateTime.getMinutes().toString().padStart(2, '0') }}
                     </p>
                 </div>
             </li>

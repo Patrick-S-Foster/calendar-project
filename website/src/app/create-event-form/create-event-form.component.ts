@@ -49,24 +49,20 @@ import {SpeechService} from "../speech.service";
 })
 export class CreateEventFormComponent {
 
-    private readonly millisecondsPerHour = 3600000;
-
     title = new FormControl('', [Validators.required]);
-    start: FormControl<Date | null>;
-    end: FormControl<Date | null>;
+    dateTime: FormControl<Date | null>;
     submitting = false;
     submitFailed = false;
 
     constructor(private eventService: EventService, private dialogRef: MatDialogRef<CreateEventFormComponent>,
                 @Inject(MAT_DIALOG_DATA) data: Date, protected speechService: SpeechService) {
-        this.start = new FormControl(data, [Validators.required]);
-        this.end = new FormControl(new Date(data.getTime() + this.millisecondsPerHour), [Validators.required])
+        this.dateTime = new FormControl(data, [Validators.required]);
     }
 
     async submit($event: Event) {
         $event.preventDefault();
 
-        if (this.submitting || this.title.invalid || this.start.invalid || this.end.invalid) {
+        if (this.submitting || this.title.invalid || this.dateTime.invalid) {
             return;
         }
 
@@ -74,14 +70,13 @@ export class CreateEventFormComponent {
         this.submitFailed = false;
 
         const title = this.title.value;
-        const start = this.start.value;
-        const end = this.end.value;
+        const dateTime = this.dateTime.value;
 
-        if (title === null || start === null || end === null) {
+        if (title === null || dateTime === null) {
             return;
         }
 
-        if (await this.eventService.create(title, start, end)) {
+        if (await this.eventService.create(title, dateTime)) {
             this.dialogRef.close();
             return;
         }
