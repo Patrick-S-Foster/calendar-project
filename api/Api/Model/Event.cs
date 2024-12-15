@@ -11,7 +11,5 @@ public class Event
 
     [MaxLength(255)] public required string Title { get; set; }
 
-    public DateTime Start { get; set; }
-
-    public DateTime End { get; set; }
+    public DateTime DateTime { get; set; }
 }

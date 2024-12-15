@@ -31,8 +31,7 @@ public static class Endpoints
                 {
                     User = user,
                     Title = e.Title,
-                    Start = e.Start,
-                    End = e.End
+                    DateTime = e.DateTime
                 });
                 await db.SaveChangesAsync();
 
@@ -51,11 +50,9 @@ public static class Endpoints
 
                     return Results.Json(db.Events.Where(e =>
                             e.User == user &&
-                            e.Start.Year <= year &&
-                            e.Start.Month <= month &&
-                            e.End.Year >= year &&
-                            e.End.Month >= month)
-                        .Select(e => new ReturnEvent(e.Id, e.Title, e.Start, e.End)));
+                            e.DateTime.Year == year &&
+                            e.DateTime.Month == month)
+                        .Select(e => new ReturnEvent(e.Id, e.Title, e.DateTime)));
                 })
             .RequireAuthorization();
 
@@ -73,8 +70,7 @@ public static class Endpoints
                 }
 
                 existingEvent.Title = e.Title;
-                existingEvent.Start = e.Start;
-                existingEvent.End = e.End;
+                existingEvent.DateTime = e.DateTime;
                 await db.SaveChangesAsync();
 
                 return Results.Ok();
