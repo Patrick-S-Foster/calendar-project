@@ -8,10 +8,18 @@
   gap: 1em;
 }
 
-.close-button {
+.buttons {
   position: absolute;
-  top: 0.2em;
-  right: 0.2em;
+  top: 0.25em;
+  right: 0.25em;
+  display: flex;
+  flex-direction: row-reverse;
+}
+
+.speech-to-event-button {
+  @include mat.icon-button-overrides((
+          icon-color: var(--mat-sys-primary),
+  ));
 }
 
 h2 {

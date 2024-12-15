@@ -1,7 +1,14 @@
 <div class="container">
-    <button class="close-button" mat-icon-button [mat-dialog-close]="">
-        <mat-icon>close</mat-icon>
-    </button>
+    <div class="buttons">
+        <button mat-icon-button [mat-dialog-close]="">
+            <mat-icon>close</mat-icon>
+        </button>
+
+        <button title="Use speech with AI to create an event" class="speech-to-event-button" mat-icon-button
+                (click)="speechToEvent()" [disabled]="speechRecognition === null || speechRecognition === undefined">
+            <mat-icon>mic</mat-icon>
+        </button>
+    </div>
 
     <h2>Create Event</h2>
 

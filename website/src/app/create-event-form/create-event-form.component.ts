@@ -55,6 +55,8 @@ export class CreateEventFormComponent {
     end: FormControl<Date | null>;
     submitting = false;
     submitFailed = false;
+    speechRecognition =
+        (window as any)['SpeechRecognition'] || (window as any)['webkitSpeechRecognition'];
 
     constructor(private eventService: EventService, private dialogRef: MatDialogRef<CreateEventFormComponent>, @Inject(MAT_DIALOG_DATA) data: Date) {
         this.start = new FormControl(data, [Validators.required]);
@@ -86,5 +88,9 @@ export class CreateEventFormComponent {
 
         this.submitFailed = true;
         this.submitting = false;
+    }
+
+    speechToEvent() {
+        // TODO: implement
     }
 }
