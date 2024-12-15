@@ -28,6 +28,7 @@ export class SpeechService {
 
         this.recognition.onspeechend = this.speechEnd.bind(this);
         this.recognition.onresult = this.result.bind(this);
+        this.recognition.onerror = this.onError.bind(this);
     }
 
     isAvailable() {
@@ -62,5 +63,9 @@ export class SpeechService {
     private result(event: any) {
         this.receivedOutputSinceStarted = true;
         this.success.set(event.results[0][0].transcript);
+    }
+
+    private onError(event: any) {
+        this.error.set('An error occurred... Please allow the webpage to use the microphone, and try again later.')
     }
 }
