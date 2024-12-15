@@ -60,7 +60,7 @@ export class EventService {
         this.loggedIn = true;
     }
 
-    private getHeaders(): { 'Content-Type': string, 'Authorization': string } | { 'Content-Type': string } {
+    getHeaders(): { 'Content-Type': string, 'Authorization': string } | { 'Content-Type': string } {
         const bearerToken = localStorage.getItem(this.accessTokenKey);
 
         if (bearerToken != null) {

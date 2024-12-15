@@ -7,4 +7,5 @@ export const environment = {
     getEventsUrl: 'http://localhost:8080/events',
     updateUrl: 'http://localhost:8080/update',
     deleteUrl: 'http://localhost:8080/delete',
+    generateUrl: 'http://localhost:8080/generate',
 };

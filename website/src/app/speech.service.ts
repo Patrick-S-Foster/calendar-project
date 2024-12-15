@@ -1,5 +1,5 @@
-import {Injectable, signal} from '@angular/core';
-import {CalendarEvent} from "./calendarEvent";
+import {ApplicationRef, Injectable, signal} from '@angular/core';
+import {AiService} from "./ai.service";
 
 @Injectable({
     providedIn: 'root'
@@ -7,13 +7,15 @@ import {CalendarEvent} from "./calendarEvent";
 export class SpeechService {
 
     private readonly recognition: any;
-    private started = false;
+    private speechRunning = false;
     private receivedOutputSinceStarted = false;
 
-    success = signal<CalendarEvent | null>(null);
+    submittingToAi = false;
+
+    success = signal<{ title: string, dateTime: Date } | null>(null);
     error = signal('');
 
-    constructor() {
+    constructor(private aiService: AiService, private applicationRef: ApplicationRef) {
         const recognition = (window as any)['SpeechRecognition'] || (window as any)['webkitSpeechRecognition'];
 
         if (recognition === null || recognition === undefined) {
@@ -41,19 +43,22 @@ export class SpeechService {
             return;
         }
 
-        if (this.started) {
+        if (this.speechRunning || this.submittingToAi) {
             return;
         }
 
-        this.started = true;
+        this.speechRunning = true;
         this.receivedOutputSinceStarted = false;
+        this.submittingToAi = false;
+        this.success.set(null);
+        this.error.set('');
         this.recognition.start();
     }
 
     private speechEnd() {
         this.recognition.stop();
 
-        this.started = false;
+        this.speechRunning = false;
 
         if (!this.receivedOutputSinceStarted) {
             this.error.set('No speech was detected.');
@@ -62,10 +67,36 @@ export class SpeechService {
 
     private result(event: any) {
         this.receivedOutputSinceStarted = true;
-        this.success.set(event.results[0][0].transcript);
+        this.submittingToAi = true;
+
+        this.applicationRef.tick();
+
+        this.aiService.generate(event.results[0][0].transcript).then(data => {
+            this.submittingToAi = false;
+            this.applicationRef.tick();
+
+            if (data === null) {
+                this.error.set('An error occurred while parsing the speech with the AI. Please try again later.');
+                return;
+            }
+
+            this.success.set(data);
+        });
     }
 
-    private onError(event: any) {
-        this.error.set('An error occurred... Please allow the webpage to use the microphone, and try again later.')
+    private onError(event: { error: string }) {
+        this.speechRunning = false;
+
+        if (event.error === 'no-speech') {
+            this.error.set('No speech was detected. Please try again.');
+            return;
+        }
+
+        if (event.error === 'not-allowed') {
+            this.error.set('Please allow the webpage access to the microphone if you want to use this feature.');
+            return;
+        }
+
+        this.error.set(`An unknown error '${event.error}' occurred... Please try again later.`)
     }
 }

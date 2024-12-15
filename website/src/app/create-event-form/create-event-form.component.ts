@@ -12,11 +12,12 @@ import {
     MAT_NATIVE_DATE_FORMATS,
     MatNativeDateModule
 } from "@angular/material/core";
-import {MAT_DIALOG_DATA, MatDialogClose, MatDialogRef} from "@angular/material/dialog";
+import {MAT_DIALOG_DATA, MatDialog, MatDialogClose, MatDialogRef} from "@angular/material/dialog";
 import {CustomDateAdapter} from "./CustomDateAdapter";
 import {MatTimepicker, MatTimepickerInput, MatTimepickerToggle} from "@angular/material/timepicker";
 import {MatProgressSpinner} from "@angular/material/progress-spinner";
 import {EventService} from "../event.service";
+import {SpeechInputComponent} from "../speech-input/speech-input.component";
 import {SpeechService} from "../speech.service";
 
 @Component({
@@ -58,7 +59,7 @@ export class CreateEventFormComponent {
                 @Inject(MAT_DIALOG_DATA) data: {
                     title: string | null,
                     date: Date
-                }, protected speechService: SpeechService) {
+                }, protected speechService: SpeechService, private dialog: MatDialog) {
         this.title = new FormControl(data.title, [Validators.required]);
         this.dateTime = new FormControl(data.date, [Validators.required]);
     }
@@ -90,6 +91,7 @@ export class CreateEventFormComponent {
     }
 
     speechToEvent() {
-        // TODO: implement
+        this.dialogRef.close();
+        this.dialog.open(SpeechInputComponent);
     }
 }
