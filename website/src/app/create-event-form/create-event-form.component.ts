@@ -17,6 +17,7 @@ import {CustomDateAdapter} from "./CustomDateAdapter";
 import {MatTimepicker, MatTimepickerInput, MatTimepickerToggle} from "@angular/material/timepicker";
 import {MatProgressSpinner} from "@angular/material/progress-spinner";
 import {EventService} from "../event.service";
+import {SpeechService} from "../speech.service";
 
 @Component({
     selector: 'app-create-event-form',
@@ -55,10 +56,9 @@ export class CreateEventFormComponent {
     end: FormControl<Date | null>;
     submitting = false;
     submitFailed = false;
-    speechRecognition =
-        (window as any)['SpeechRecognition'] || (window as any)['webkitSpeechRecognition'];
 
-    constructor(private eventService: EventService, private dialogRef: MatDialogRef<CreateEventFormComponent>, @Inject(MAT_DIALOG_DATA) data: Date) {
+    constructor(private eventService: EventService, private dialogRef: MatDialogRef<CreateEventFormComponent>,
+                @Inject(MAT_DIALOG_DATA) data: Date, protected speechService: SpeechService) {
         this.start = new FormControl(data, [Validators.required]);
         this.end = new FormControl(new Date(data.getTime() + this.millisecondsPerHour), [Validators.required])
     }
