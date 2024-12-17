@@ -11,7 +11,7 @@ RUN npm install
 
 COPY . .
 
-RUN ng build
+RUN ng build --configuration=production
 
 FROM nginx:1.27.3
 
