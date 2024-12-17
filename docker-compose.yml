@@ -23,7 +23,7 @@ services:
             test: ./healthcheck.sh
             interval: 10s
             timeout: 1s
-            retries: 15
+            retries: 100
             start_period: 30s
 
     api:
@@ -43,6 +43,12 @@ services:
         depends_on:
             db:
                 condition: service_healthy
+
+    nginx:
+        build:
+            context: ./website
+        ports:
+            - 80:80
 
 secrets:
     db_password:
