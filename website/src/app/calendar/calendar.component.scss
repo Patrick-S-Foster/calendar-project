@@ -1,0 +1,77 @@
+$small: 500px;
+
+.container {
+  height: 100%;
+  display: flex;
+  gap: 0.5em;
+  flex-direction: column;
+
+  @media screen and (max-width: $small) {
+    font-size: 0.8em;
+  }
+}
+
+.header {
+  position: relative;
+  display: flex;
+  gap: 1em;
+  align-items: center;
+  justify-content: center;
+
+  @media screen and (max-width: $small) {
+    font-size: 0.9em;
+    gap: 0;
+  }
+}
+
+h2 {
+  min-width: 8em;
+  text-align: center;
+  user-select: none;
+}
+
+.fab {
+  position: absolute;
+  right: 2em;
+
+  @media screen and (max-width: $small) {
+    right: 1em;
+  }
+}
+
+.names {
+  display: flex;
+  justify-content: space-around;
+}
+
+h4 {
+  margin: 0;
+  text-align: center;
+}
+
+.days,
+.cells {
+  display: grid;
+  grid-template-columns: repeat(7, calc(100% / 7));
+  user-select: none;
+}
+
+.cells {
+  --vertical-count: 0;
+  --height: 0;
+
+  height: 100%;
+  grid-template-rows: repeat(var(--vertical-count), var(--height));
+}
+
+.filler-cell {
+  background-color: rgba(0, 0, 0, 0.15);
+}
+
+.first-filler-cell {
+  border-radius: 0.5em 0 0 0.5em;
+}
+
+.last-filler-cell {
+  border-radius: 0 0.5em 0.5em 0;
+}
