@@ -14,9 +14,7 @@ public class OllamaRequest(string prompt)
                              2. the date (in the format yyyy-MM-dd)
                              3. the time (in the format HH:mm)
 
-                             Relative dates and times such as today, tomorrow, next week, next year, etc., should be calculated offset to the current date/time of '{DateTime.Now:f}' (i.e., tomorrow would be '{DateTime.Now.AddDays(1):f}', one week from today would be '{DateTime.Now.AddDays(7):f}', etc.). The three items should be returned as a JSON object, with the keys "title", "date", and "time".
-
-                             If the user supplies an explicit date/time then use it, if not, default to '{DateTime.Now.AddDays(1):f}' at 10:00.
+                             Relative dates and times such as today, tomorrow, next week, next year, etc., should be calculated offset to the current date/time of '{DateTime.Now:f}' (i.e., tomorrow is '{DateTime.Now.AddDays(1):f}', one week from today is '{DateTime.Now.AddDays(7):f}', one month from today is '{DateTime.Now.AddMonths(1):f}', etc.). The three items should be returned as a JSON object, with the keys "title", "date", and "time". If the user supplies an explicit date, then use it, if not, use tomorrow. If the user supplies a time, then use it, if not, DO NOT USE THE CURRENT TIME, use 10:00 instead.
 
                              Here is the user input:
 
