@@ -13,3 +13,5 @@
 As this application uses the [Web Speech API](https://developer.mozilla.org/en-US/docs/Web/API/Web_Speech_API), it is recommended to use Chrome, Edge, or Safari as a browser. If another browser is used, such as Firefox, this functionality will not be available.
 
 This application uses Google's [Gemma 2 2B](https://huggingface.co/google/gemma-2-2b) large language model to understand natural language. This model can quickly use a lot of system resources, so if the application is run on a slower/older computer, longer waiting times for natural language processing can be expected.
+
+For ease of use, the files `./db_password.txt` and `./db_root_password.txt` have been included in the repository. In a production environment, these would be included through the use of a pipeline or build system. Fhe contents of these files can be modified to choose different passwords.
