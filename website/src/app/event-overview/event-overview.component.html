@@ -55,7 +55,7 @@
             </button>
         </form>
     } @else {
-        <h2>{{ calendarEvent.title }}</h2>
+        <h2 class="extra-padding">{{ calendarEvent.title }}</h2>
 
         <p>{{ calendarEvent.dateTime.getHours().toString().padStart(2, '0') }}:{{ calendarEvent.dateTime.getMinutes().toString().padStart(2, '0') }}<br>
             {{ calendarEvent.dateTime.toDateString() }}</p>
