@@ -1,6 +1,5 @@
 import {Component, Inject} from '@angular/core';
-import {MAT_DIALOG_DATA, MatDialogClose, MatDialogRef} from "@angular/material/dialog";
-import {CalendarEvent} from "../calendarEvent";
+import {MAT_DIALOG_DATA, MatDialog, MatDialogClose, MatDialogRef} from "@angular/material/dialog";
 import {MatButton, MatIconButton} from "@angular/material/button";
 import {MatIcon} from "@angular/material/icon";
 import {FormControl, FormsModule, ReactiveFormsModule, Validators} from "@angular/forms";
@@ -12,6 +11,8 @@ import {DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE, MAT_NATIVE_DATE_FORMATS}
 import {CustomDateAdapter} from "../create-event-form/CustomDateAdapter";
 import {MatProgressSpinner} from "@angular/material/progress-spinner";
 import {EventService} from "../event.service";
+import {SpeechService} from "../speech.service";
+import {SpeechInputComponent} from "../speech-input/speech-input.component";
 
 @Component({
     selector: 'app-event-overview',
@@ -52,10 +53,16 @@ export class EventOverviewComponent {
     title: FormControl<string | null>;
     dateTime: FormControl<Date | null>;
 
-    constructor(@Inject(MAT_DIALOG_DATA) protected calendarEvent: CalendarEvent, private eventService: EventService,
-                private dialogRef: MatDialogRef<EventOverviewComponent>) {
+    constructor(@Inject(MAT_DIALOG_DATA) protected calendarEvent: {
+                    id: number,
+                    title: string | null,
+                    dateTime: Date,
+                    flag: boolean
+                }, private eventService: EventService, private dialogRef: MatDialogRef<EventOverviewComponent>,
+                protected speechService: SpeechService, private dialog: MatDialog) {
         this.title = new FormControl(calendarEvent.title, [Validators.required]);
         this.dateTime = new FormControl(calendarEvent.dateTime, [Validators.required]);
+        this.editing = calendarEvent.flag;
     }
 
     edit() {
@@ -88,5 +95,16 @@ export class EventOverviewComponent {
     async delete() {
         this.dialogRef.close();
         await this.eventService.delete(this.calendarEvent.id);
+    }
+
+    speechToEvent() {
+        this.dialogRef.close();
+        this.dialog.open(SpeechInputComponent, {
+            data: {
+                openType: EventOverviewComponent,
+                id: this.calendarEvent.id,
+                flag: true
+            }
+        });
     }
 }

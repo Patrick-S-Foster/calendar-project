@@ -1,11 +1,11 @@
-import {Component, effect, OnInit} from '@angular/core';
+import {Component, effect, Inject, OnInit} from '@angular/core';
 import {SpeechService} from "../speech.service";
 import {MatButton, MatIconButton} from "@angular/material/button";
-import {MatDialog, MatDialogClose, MatDialogRef} from "@angular/material/dialog";
+import {MAT_DIALOG_DATA, MatDialog, MatDialogClose, MatDialogRef} from "@angular/material/dialog";
 import {MatIcon} from "@angular/material/icon";
 import {MatError} from "@angular/material/form-field";
 import {MatProgressSpinner} from "@angular/material/progress-spinner";
-import {CreateEventFormComponent} from "../create-event-form/create-event-form.component";
+import {ComponentType} from "@angular/cdk/portal";
 
 @Component({
     selector: 'app-speech-input',
@@ -22,7 +22,12 @@ import {CreateEventFormComponent} from "../create-event-form/create-event-form.c
 })
 export class SpeechInputComponent implements OnInit {
 
-    constructor(protected speechService: SpeechService, private dialogRef: MatDialogRef<SpeechInputComponent>, private dialog: MatDialog) {
+    constructor(protected speechService: SpeechService, private dialogRef: MatDialogRef<SpeechInputComponent>,
+                private dialog: MatDialog, @Inject(MAT_DIALOG_DATA) data: {
+            openType: ComponentType<unknown>,
+            id: number | null,
+            flag: boolean
+        }) {
         effect(() => {
             const event = this.speechService.success();
 
@@ -31,7 +36,14 @@ export class SpeechInputComponent implements OnInit {
             }
 
             this.dialogRef.close();
-            this.dialog.open(CreateEventFormComponent, {data: {title: event.title, date: event.dateTime}})
+            this.dialog.open(data.openType, {
+                data: {
+                    id: data.id,
+                    title: event.title,
+                    dateTime: event.dateTime,
+                    flag: data.flag
+                }
+            })
         });
     }
 
