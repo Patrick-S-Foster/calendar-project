@@ -136,7 +136,7 @@ export class CalendarComponent implements AfterViewInit {
             date = new Date(this.eventService.currentYear, this.eventService.currentMonth - 1, this.selectedDay, this.defaultHour, this.defaultMinute);
         }
 
-        this.dialog.open(CreateEventFormComponent, {data: {title: null, date: date}});
+        this.dialog.open(CreateEventFormComponent, {data: {title: null, dateTime: date}});
     }
 
     protected setStyleVariables() {

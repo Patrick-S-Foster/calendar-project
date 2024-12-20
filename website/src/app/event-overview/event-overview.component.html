@@ -4,7 +4,14 @@
             <mat-icon>close</mat-icon>
         </button>
 
-        @if (!editing) {
+        @if (editing) {
+            <button [title]="!speechService.isAvailable() ? 'The Web Speech API is not available on this browser' : 'Use speech with AI to create an event'"
+                    class="speech-to-event-button" mat-icon-button (click)="speechToEvent()"
+                    [disabled]="!speechService.isAvailable()">
+                <mat-icon>mic</mat-icon>
+            </button>
+        }
+        @else {
             <button mat-icon-button (click)="delete()" class="delete-button">
                 <mat-icon>delete</mat-icon>
             </button>

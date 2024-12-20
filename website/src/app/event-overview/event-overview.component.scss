@@ -27,6 +27,14 @@ $smallSize: 440px;
   ));
 }
 
+.speech-to-event-button {
+  pointer-events: auto;
+
+  @include mat.icon-button-overrides((
+          icon-color: var(--mat-sys-primary),
+  ));
+}
+
 h2,
 p {
   margin: 0;

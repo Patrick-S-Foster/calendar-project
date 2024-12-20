@@ -57,11 +57,12 @@ export class CreateEventFormComponent {
 
     constructor(private eventService: EventService, private dialogRef: MatDialogRef<CreateEventFormComponent>,
                 @Inject(MAT_DIALOG_DATA) data: {
+                    id: number | null,
                     title: string | null,
-                    date: Date
+                    dateTime: Date
                 }, protected speechService: SpeechService, private dialog: MatDialog) {
         this.title = new FormControl(data.title, [Validators.required]);
-        this.dateTime = new FormControl(data.date, [Validators.required]);
+        this.dateTime = new FormControl(data.dateTime, [Validators.required]);
     }
 
     async submit($event: Event) {
@@ -92,6 +93,6 @@ export class CreateEventFormComponent {
 
     speechToEvent() {
         this.dialogRef.close();
-        this.dialog.open(SpeechInputComponent);
+        this.dialog.open(SpeechInputComponent, {data: {openType: CreateEventFormComponent}});
     }
 }
