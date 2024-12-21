@@ -51,7 +51,8 @@ import {SpeechService} from "../speech.service";
 export class CreateEventFormComponent {
 
     title: FormControl<string | null>;
-    dateTime: FormControl<Date | null>;
+    date: FormControl<Date | null>;
+    time: FormControl<Date | null>;
     submitting = false;
     submitFailed = false;
 
@@ -62,13 +63,14 @@ export class CreateEventFormComponent {
                     dateTime: Date
                 }, protected speechService: SpeechService, private dialog: MatDialog) {
         this.title = new FormControl(data.title, [Validators.required]);
-        this.dateTime = new FormControl(data.dateTime, [Validators.required]);
+        this.date = new FormControl(data.dateTime, [Validators.required]);
+        this.time = new FormControl(data.dateTime, [Validators.required]);
     }
 
     async submit($event: Event) {
         $event.preventDefault();
 
-        if (this.submitting || this.title.invalid || this.dateTime.invalid) {
+        if (this.submitting || this.title.invalid || this.date.invalid || this.time.invalid) {
             return;
         }
 
@@ -76,7 +78,12 @@ export class CreateEventFormComponent {
         this.submitFailed = false;
 
         const title = this.title.value;
-        const dateTime = this.dateTime.value;
+        const dateTime = new Date(
+            this.date.value!.getFullYear(),
+            this.date.value!.getMonth(),
+            this.date.value!.getDate(),
+            this.time.value!.getHours(),
+            this.time.value!.getMinutes());
 
         if (title === null || dateTime === null) {
             return;

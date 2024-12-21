@@ -51,7 +51,8 @@ export class EventOverviewComponent {
     submitting = false;
     submitFailed = false;
     title: FormControl<string | null>;
-    dateTime: FormControl<Date | null>;
+    date: FormControl<Date | null>;
+    time: FormControl<Date | null>;
 
     constructor(@Inject(MAT_DIALOG_DATA) protected calendarEvent: {
                     id: number,
@@ -61,7 +62,8 @@ export class EventOverviewComponent {
                 }, private eventService: EventService, private dialogRef: MatDialogRef<EventOverviewComponent>,
                 protected speechService: SpeechService, private dialog: MatDialog) {
         this.title = new FormControl(calendarEvent.title, [Validators.required]);
-        this.dateTime = new FormControl(calendarEvent.dateTime, [Validators.required]);
+        this.date = new FormControl(calendarEvent.dateTime, [Validators.required]);
+        this.time = new FormControl(calendarEvent.dateTime, [Validators.required]);
         this.editing = calendarEvent.flag;
     }
 
@@ -72,14 +74,21 @@ export class EventOverviewComponent {
     async submit($event: Event) {
         $event.preventDefault();
 
-        if (this.submitting || this.title.invalid || this.dateTime.invalid) {
+        if (this.submitting || this.title.invalid || this.date.invalid || this.time.invalid) {
             return;
         }
 
         this.submitting = true;
         this.submitFailed = false;
 
-        if (await this.eventService.update(this.calendarEvent.id, this.title.value!, this.dateTime.value!)) {
+        const dateTime = new Date(
+            this.date.value!.getFullYear(),
+            this.date.value!.getMonth(),
+            this.date.value!.getDate(),
+            this.time.value!.getHours(),
+            this.time.value!.getMinutes());
+
+        if (await this.eventService.update(this.calendarEvent.id, this.title.value!, dateTime)) {
             this.dialogRef.close();
             return;
         }
