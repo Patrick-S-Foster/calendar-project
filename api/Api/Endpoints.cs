@@ -9,6 +9,8 @@ public static class Endpoints
 {
     public static void MapLogoutEndpoint(this WebApplication app)
     {
+        // POST /logout
+        // Logs out the current user
         app.MapPost("/logout", async (SignInManager<IdentityUser> signInManager) =>
             {
                 await signInManager.SignOutAsync();
@@ -19,6 +21,8 @@ public static class Endpoints
 
     public static void MapCrudEndpoints(this WebApplication app)
     {
+        // POST /create
+        // Creates a new event
         app.MapPost("/create", async (CalendarDbContext db, UserManager<IdentityUser> userManager,
                 ClaimsPrincipal claimsPrincipal, [FromBody] NewEvent e) =>
             {
@@ -39,6 +43,8 @@ public static class Endpoints
             })
             .RequireAuthorization();
 
+        // GET /events/{year:int}/{month:int}
+        // Returns all events for the given year and month
         app.MapGet("/events/{year:int}/{month:int}",
                 async (CalendarDbContext db, UserManager<IdentityUser> userManager, ClaimsPrincipal claimsPrincipal,
                     int year, int month) =>
@@ -56,6 +62,8 @@ public static class Endpoints
                 })
             .RequireAuthorization();
 
+        // PUT /update/{id:int}
+        // Updates the event with the given id
         app.MapPut("/update/{id:int}", async (CalendarDbContext db, UserManager<IdentityUser> userManager,
                 ClaimsPrincipal claimsPrincipal, int id, [FromBody] NewEvent e) =>
             {
@@ -77,6 +85,8 @@ public static class Endpoints
             })
             .RequireAuthorization();
 
+        // DELETE /delete/{id:int}
+        // Deletes the event with the given id
         app.MapDelete("/delete/{id:int}", async (CalendarDbContext db, UserManager<IdentityUser> userManager,
                 ClaimsPrincipal claimsPrincipal, int id) =>
             {
