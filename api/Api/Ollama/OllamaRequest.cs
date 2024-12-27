@@ -2,10 +2,21 @@
 
 namespace Api.Ollama;
 
+/// <summary>
+/// Used to send a request for generation from the Ollama API.
+/// </summary>
+/// <param name="prompt">user prompt</param>
 public class OllamaRequest(string prompt)
 {
-    [JsonPropertyName("model")] public string Model => "gemma2:2b";
+    /// <summary>
+    /// Model to use for generation.
+    /// </summary>
+    [JsonPropertyName("model")]
+    public string Model => "gemma2:2b";
 
+    /// <summary>
+    /// Prompt to use for generation.
+    /// </summary>
     [JsonPropertyName("prompt")]
     public string Prompt => $"""
                              User input will be given to you at the very end of this message. You must determine the following items in the context of a calendar scheduling app:
@@ -21,7 +32,15 @@ public class OllamaRequest(string prompt)
                              {prompt}
                              """;
 
-    [JsonPropertyName("format")] public string Format => "json";
+    /// <summary>
+    /// Format of the response.
+    /// </summary>
+    [JsonPropertyName("format")]
+    public string Format => "json";
 
-    [JsonPropertyName("stream")] public bool Stream => false;
+    /// <summary>
+    /// Whether to stream the response.
+    /// </summary>
+    [JsonPropertyName("stream")]
+    public bool Stream => false;
 }
