@@ -2,24 +2,41 @@ import {environment} from "../environments/environment";
 import {Injectable} from '@angular/core';
 import {CalendarEvent} from "./calendarEvent";
 
+// Provides methods and properties to interact with a user's account and events
 @Injectable({
     providedIn: 'root'
 })
 export class EventService {
 
+    // Used to store the access token in local storage
     private readonly accessTokenKey = 'AccessToken';
+
+    // Used to store the refresh token in local storage
     private readonly refreshTokenKey = 'RefreshToken';
+
+    // Used to store the refresh at time in local storage
     private readonly refreshAtKey = 'RefreshAt';
+
+    // Used to determine the percentage of the refresh time to elapse before a refresh call is made
     private readonly refreshCachePercentage = 0.5;
 
+    // Current refresh at time
     private refreshAt = 0;
 
+    // True if the user is currently logged in
     loggedIn = false;
+
+    // The current one-based month
     currentMonth = new Date().getMonth() + 1;
+
+    // The current year
     currentYear = new Date().getFullYear();
+
+    // The current events in the month and year
     events: CalendarEvent[] = [];
 
     constructor() {
+        // Retrieve values from local storage
         const accessToken = localStorage.getItem(this.accessTokenKey);
         const refreshToken = localStorage.getItem(this.refreshTokenKey);
         const refreshAt = parseInt(localStorage.getItem(this.refreshAtKey) ?? 'NaN');
@@ -51,6 +68,7 @@ export class EventService {
 
         const json = await response.json();
 
+        // The "expiresIn" value is given in seconds, and must be converted to milliseconds
         this.refreshAt = Date.now() + json.expiresIn * 1000 * this.refreshCachePercentage;
 
         localStorage.setItem(this.accessTokenKey, json.accessToken);
